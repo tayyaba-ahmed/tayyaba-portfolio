@@ -58,14 +58,7 @@ export function Header() {
             : "bg-transparent"
         }`}
       >
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
-          <a
-            href="#top"
-            className="font-display text-2xl font-semibold tracking-tight text-foreground transition-colors hover:text-accent"
-          >
-            {site.firstName}
-          </a>
-
+        <div className="mx-auto flex max-w-6xl items-center justify-end px-6 py-5">
           <nav className="hidden items-center gap-8 md:flex">
             {site.nav.map((item) => {
               const isActive = activeSection === item.href;

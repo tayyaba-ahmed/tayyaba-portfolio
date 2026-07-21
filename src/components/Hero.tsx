@@ -7,14 +7,10 @@ export function Hero() {
   return (
     <section
       id="top"
-      className="letterbox relative flex min-h-dvh items-end overflow-hidden px-6 pb-16 pt-28 sm:pb-20 sm:pt-32"
+      className="letterbox relative flex min-h-dvh items-center overflow-hidden px-6 pb-12 pt-20 sm:pb-14 sm:pt-24"
     >
       <div
-        className="animate-light-drift pointer-events-none absolute -top-1/4 left-1/2 h-[60vh] w-[80vw] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,#c4894a22_0%,transparent_65%)] blur-3xl"
-        aria-hidden
-      />
-      <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-background via-background/70 to-transparent"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-background/80 via-background/25 to-transparent"
         aria-hidden
       />
 

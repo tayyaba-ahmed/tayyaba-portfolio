@@ -6,7 +6,6 @@ export type Skill = {
 export type Service = {
   title: string;
   description: string;
-  image: string;
 };
 
 export type Project = {
@@ -15,6 +14,7 @@ export type Project = {
   tags: string[];
   href?: string;
   github?: string;
+  image?: string;
 };
 
 export type SocialLink = {
@@ -51,54 +51,61 @@ export const site = {
       title: "Websites & Landing Pages",
       description:
         "Marketing sites, portfolios, and landing pages built to load fast and convert.",
-      image: "/services/web.svg",
+    },
+    {
+      title: "Ecommerce Websites",
+      description:
+        "Full online stores — catalogs, carts, checkout, and payments ready to sell.",
+    },
+    {
+      title: "Website Redesign",
+      description:
+        "Outdated sites rebuilt with clearer structure, stronger visuals, and better conversion.",
     },
     {
       title: "CMS & Admin Systems",
       description:
         "Custom CMS and admin tools so your team can edit content and manage data without a developer.",
-      image: "/services/laravel.svg",
     },
     {
       title: "Integrations",
       description:
         "Payment flows, AI chatbots, and third-party APIs wired cleanly into your product.",
-      image: "/services/api.svg",
     },
     {
       title: "Care & Fixes",
       description:
         "Bugs squashed, speed recovered, and sites kept reliable after launch.",
-      image: "/services/maintenance.svg",
     },
   ] satisfies Service[],
   projects: [
     {
-      title: "Project One",
+      title: "StrideWear",
       description:
-        "Full-stack app with auth, live updates, and a dashboard that stays usable at speed.",
-      tags: ["Next.js", "TypeScript", "PostgreSQL"],
-      href: "https://example.com",
-      github: "https://github.com",
+        "Fashion e-commerce with curated collections, category shopping, and a clean storefront built for everyday elegance.",
+      tags: ["Next.js", "E-commerce", "UI"],
+      href: "https://stridewear.vercel.app/",
+      image: "stridewear",
     },
     {
-      title: "Project Two",
+      title: "ZAS Architects & Interiors",
       description:
-        "Open-source CLI that kills repetitive workflow — hours back every week.",
-      tags: ["Node.js", "CLI", "Open Source"],
-      github: "https://github.com",
+        "Architecture and interiors studio site — services, portfolio energy, and a dark cinematic presence for a design firm.",
+      tags: ["Next.js", "Architecture", "Branding"],
+      href: "https://www.zasarchitectsinteriors.com/",
+      image: "zas",
     },
     {
-      title: "Project Three",
+      title: "Personal Portfolio",
       description:
-        "Mobile-first landing built for conversion, with motion that earns its place.",
-      tags: ["React", "Tailwind CSS", "Motion"],
-      href: "https://example.com",
+        "My own portfolio — film-toned layout, sharp type, and a living background built to show what I ship.",
+      tags: ["Next.js", "Tailwind CSS", "Motion"],
+      href: "https://tayyaba-ahmed-portfolio.vercel.app/",
     },
-  ] satisfies Project[],
+  ] as Project[],
   socials: [
     { label: "GitHub", href: "https://github.com/tayyaba-ahmed", icon: "SiGithub" },
-    { label: "LinkedIn", href: "https://linkedin.com/in/tayyabaahmed", icon: "SiLinkedinIn" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/tayyabaahmed", icon: "SiLinkedinIn" },
     { label: "WhatsApp", href: "https://wa.me/923132115662", icon: "SiWhatsapp" },
   ] satisfies SocialLink[],
   nav: [
