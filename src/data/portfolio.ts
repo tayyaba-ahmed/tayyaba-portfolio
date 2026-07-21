@@ -101,6 +101,7 @@ export const site = {
         "My own portfolio — film-toned layout, sharp type, and a living background built to show what I ship.",
       tags: ["Next.js", "Tailwind CSS", "Motion"],
       href: "https://tayyaba-ahmed-portfolio.vercel.app/",
+      image: "portfolio",
     },
   ] as Project[],
   socials: [

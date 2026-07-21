@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import nodemailer from "nodemailer";
 import { site } from "@/data/portfolio";
 
 type ContactBody = {
@@ -39,66 +40,65 @@ export async function POST(request: Request) {
     );
   }
 
-  const web3Key = process.env.WEB3FORMS_ACCESS_KEY;
+  const gmailUser = process.env.GMAIL_USER?.trim();
+  const gmailPass = process.env.GMAIL_APP_PASSWORD?.replace(/\s+/g, "");
+
+  if (!gmailUser || !gmailPass) {
+    return NextResponse.json(
+      { error: "Email is not configured yet. Please email me directly." },
+      { status: 503 },
+    );
+  }
+
+  const to = process.env.CONTACT_TO?.trim() || gmailUser;
 
   try {
-    if (web3Key) {
-      const res = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          access_key: web3Key,
-          name,
-          email,
-          project,
-          message,
-          subject: `Portfolio inquiry — ${project}`,
-          from_name: site.fullName,
-        }),
-      });
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: gmailUser,
+        pass: gmailPass,
+      },
+    });
 
-      const data = (await res.json()) as { success?: boolean; message?: string };
-      if (!res.ok || !data.success) {
-        return NextResponse.json(
-          { error: data.message || "Could not send message." },
-          { status: 502 },
-        );
-      }
-    } else {
-      const res = await fetch(`https://formsubmit.co/ajax/${site.email}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          project,
-          message,
-          _subject: `Portfolio inquiry — ${project}`,
-          _template: "table",
-        }),
-      });
-
-      const data = (await res.json()) as { success?: string | boolean; message?: string };
-      const ok = data.success === true || data.success === "true";
-      if (!res.ok || !ok) {
-        return NextResponse.json(
-          { error: data.message || "Could not send message." },
-          { status: 502 },
-        );
-      }
-    }
+    await transporter.sendMail({
+      from: `"${site.fullName} Portfolio" <${gmailUser}>`,
+      to,
+      replyTo: `"${name}" <${email}>`,
+      subject: `Portfolio inquiry — ${project}`,
+      text: [
+        `Name: ${name}`,
+        `Email: ${email}`,
+        `Project: ${project}`,
+        "",
+        message,
+      ].join("\n"),
+      html: `
+        <div style="font-family: system-ui, sans-serif; line-height: 1.5; color: #111;">
+          <p><strong>Name:</strong> ${escapeHtml(name)}</p>
+          <p><strong>Email:</strong> ${escapeHtml(email)}</p>
+          <p><strong>Project:</strong> ${escapeHtml(project)}</p>
+          <hr style="border: none; border-top: 1px solid #ddd; margin: 16px 0;" />
+          <p style="white-space: pre-wrap;">${escapeHtml(message)}</p>
+        </div>
+      `,
+    });
 
     return NextResponse.json({ ok: true });
-  } catch {
+  } catch (error) {
+    console.error("Contact form email failed:", error);
     return NextResponse.json(
       { error: "Something went wrong. Try emailing me directly." },
       { status: 500 },
     );
   }
+}
+
+function escapeHtml(value: string) {
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
 }
