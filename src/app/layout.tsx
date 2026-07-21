@@ -23,8 +23,30 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://tayyaba-ahmed-portfolio.vercel.app"),
   title: `${site.fullName} — ${site.title}`,
   description: site.tagline,
+  openGraph: {
+    title: `${site.fullName} — ${site.title}`,
+    description: site.tagline,
+    url: "/",
+    siteName: site.fullName,
+    images: [
+      {
+        url: "/og.png",
+        width: 1024,
+        height: 460,
+        alt: `${site.fullName} — ${site.title}`,
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${site.fullName} — ${site.title}`,
+    description: site.tagline,
+    images: ["/og.png"],
+  },
 };
 
 export default function RootLayout({

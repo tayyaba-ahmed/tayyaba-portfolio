@@ -7,7 +7,7 @@ export function Hero() {
   return (
     <section
       id="top"
-      className="letterbox relative flex min-h-dvh items-center overflow-hidden px-6 pb-12 pt-20 sm:pb-14 sm:pt-24"
+      className="letterbox relative flex items-start overflow-hidden px-6 pb-16 pt-24 sm:min-h-dvh sm:items-center sm:pb-14 sm:pt-24"
     >
       <div
         className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-background/80 via-background/25 to-transparent"
