@@ -1,0 +1,185 @@
+@import "tailwindcss";
+
+:root {
+  --background: #141210;
+  --foreground: #f0e9e0;
+  --muted: #9a8f82;
+  --accent: #c9996a;
+  --accent-foreground: #141210;
+  --surface: #1c1814;
+  --border: #2c2620;
+  --film: #1f1b16;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-surface: var(--surface);
+  --color-border: var(--border);
+  --color-film: var(--film);
+  --font-sans: var(--font-outfit);
+  --font-display: var(--font-display);
+  --font-mono: var(--font-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--accent) 35%, transparent);
+  color: var(--foreground);
+}
+
+.film-stage {
+  background:
+    radial-gradient(ellipse 70% 45% at 50% -5%, #32261c88 0%, transparent 55%),
+    radial-gradient(ellipse 40% 30% at 100% 90%, #1a221c55 0%, transparent 50%),
+    var(--background);
+}
+
+.film-grain {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  opacity: 0.03;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+
+.letterbox {
+  box-shadow:
+    inset 0 28px 60px -40px rgb(0 0 0 / 35%),
+    inset 0 -28px 60px -40px rgb(0 0 0 / 35%);
+}
+
+@keyframes light-drift {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: translate3d(1%, -0.5%, 0) scale(1.03);
+  }
+}
+
+.animate-light-drift {
+  animation: light-drift 18s ease-in-out infinite;
+}
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-reveal {
+  animation: reveal-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-reveal-delay-1 {
+  animation-delay: 0.15s;
+}
+
+.animate-reveal-delay-2 {
+  animation-delay: 0.55s;
+}
+
+.animate-reveal-delay-3 {
+  animation-delay: 0.7s;
+}
+
+@keyframes line-grow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.animate-line-grow {
+  transform-origin: left;
+  animation: line-grow 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.5s both;
+}
+
+/* Letter stagger */
+@keyframes letter-in {
+  from {
+    opacity: 0;
+    transform: translateY(110%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.split-letter {
+  display: inline-block;
+  animation: letter-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Continuous skills marquee */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  animation: marquee 28s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* Wipe reveal (unused by default; kept safe) */
+.wipe-mask {
+  clip-path: inset(0 0 0 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .film-grain,
+  .animate-light-drift,
+  .animate-reveal,
+  .animate-line-grow,
+  .split-letter,
+  .marquee-track {
+    animation: none !important;
+  }
+
+  .wipe-mask {
+    clip-path: none;
+    transition: none;
+  }
+
+  .split-letter {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: var(--font-display), ui-serif, Georgia, serif;
+  }
+}
