@@ -22,10 +22,12 @@ function prefersReducedMotion() {
 export function PageAtmosphere() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const apertureRef = useRef<HTMLDivElement>(null);
+  const logoRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     const aperture = apertureRef.current;
+    const logo = logoRef.current;
     if (!canvas) return;
 
     const ctx = canvas.getContext("2d", { alpha: true, desynchronized: true });
@@ -55,6 +57,8 @@ export function PageAtmosphere() {
     let lastT = 0;
     let frame = 0;
     const dust: Dust[] = [];
+    let logoProgress = 0;
+    let logoTarget = 0;
 
     const angleDelta = (a: number, b: number) =>
       Math.abs(((a - b + 540) % 360) - 180);
@@ -88,18 +92,64 @@ export function PageAtmosphere() {
       ring.tAngle = next;
     };
 
-    const isMobile = () => window.matchMedia("(max-width: 640px)").matches;
+    /** Form from About through Services; fade as Contact arrives. */
+    const updateLogoTarget = () => {
+      const about = document.getElementById("about");
+      const contact = document.getElementById("contact");
+      if (!about || !contact) {
+        logoTarget = 0;
+        return;
+      }
+
+      const y = window.scrollY;
+      const vh = window.innerHeight;
+      const aboutTop = about.getBoundingClientRect().top + y;
+      const contactTop = contact.getBoundingClientRect().top + y;
+
+      // Start forming as About approaches center; stay solid until Contact nears
+      const start = aboutTop - vh * 0.55;
+      const end = contactTop - vh * 0.2;
+      const fadeIn = vh * 0.35;
+      const fadeOut = vh * 0.4;
+
+      if (end <= start + fadeIn + fadeOut) {
+        const doc = document.documentElement;
+        const maxScroll = Math.max(1, doc.scrollHeight - vh);
+        const t = y / maxScroll;
+        if (t <= 0.1) logoTarget = t / 0.1;
+        else if (t >= 0.9) logoTarget = (1 - t) / 0.1;
+        else logoTarget = 1;
+        return;
+      }
+
+      if (y <= start) logoTarget = 0;
+      else if (y < start + fadeIn) logoTarget = (y - start) / fadeIn;
+      else if (y < end - fadeOut) logoTarget = 1;
+      else if (y < end) logoTarget = (end - y) / fadeOut;
+      else logoTarget = 0;
+    };
+
+    const applyLogo = (p: number) => {
+      if (!logo) return;
+      // Once mostly there, lock to fully formed until fade-out begins
+      const locked = p >= 0.5 ? 1 : p / 0.5;
+      const ease = locked * locked * (3 - 2 * locked);
+      const opacity = ease * 0.18;
+      const scale = 0.8 + ease * 0.2;
+      const blur = (1 - ease) * 12;
+      const rotate = (1 - ease) * -5;
+      logo.style.opacity = String(opacity);
+      logo.style.transform = `translate(-50%, -50%) scale(${scale.toFixed(3)}) rotate(${rotate.toFixed(2)}deg)`;
+      logo.style.filter = blur < 0.35 ? "none" : `blur(${blur.toFixed(2)}px)`;
+    };
 
     const resize = () => {
       w = window.innerWidth;
       h = window.innerHeight;
-      if (isMobile()) {
-        canvas.width = 1;
-        canvas.height = 1;
-        return;
-      }
-      // Half-res canvas is much cheaper; CSS scales it up softly
-      dpr = Math.min(window.devicePixelRatio || 1, 1.25) * 0.65;
+      updateLogoTarget();
+      // Slightly lighter on small screens, but still animate
+      const mobile = window.matchMedia("(max-width: 640px)").matches;
+      dpr = Math.min(window.devicePixelRatio || 1, 1.25) * (mobile ? 0.5 : 0.65);
       canvas.width = Math.max(1, Math.floor(w * dpr));
       canvas.height = Math.max(1, Math.floor(h * dpr));
       canvas.style.width = `${w}px`;
@@ -115,6 +165,11 @@ export function PageAtmosphere() {
       updateRingTarget(e.clientX, e.clientY);
     };
 
+    const onScroll = () => {
+      updateLogoTarget();
+      if (reduced) applyLogo(logoTarget);
+    };
+
     const lerpAngle = (from: number, to: number, t: number) => {
       const diff = ((to - from + 540) % 360) - 180;
       return from + diff * t;
@@ -126,7 +181,14 @@ export function PageAtmosphere() {
       ctx.clearRect(0, 0, cw, ch);
       const gx = cw * 0.55;
       const gy = ch * 0.32;
-      const spot = ctx.createRadialGradient(gx, gy, 0, gx, gy, Math.max(cw, ch) * 0.4);
+      const spot = ctx.createRadialGradient(
+        gx,
+        gy,
+        0,
+        gx,
+        gy,
+        Math.max(cw, ch) * 0.4,
+      );
       spot.addColorStop(0, "rgba(201, 153, 106, 0.18)");
       spot.addColorStop(0.45, "rgba(196, 137, 74, 0.06)");
       spot.addColorStop(1, "rgba(196, 137, 74, 0)");
@@ -141,7 +203,6 @@ export function PageAtmosphere() {
       lastT = t;
       frame += 1;
 
-      // ~30fps is plenty for atmosphere
       if (frame % 2 === 1) {
         raf = requestAnimationFrame(draw);
         return;
@@ -151,8 +212,17 @@ export function PageAtmosphere() {
       pointer.y += (pointer.ty - pointer.y) * 0.08;
       ring.angle = lerpAngle(ring.angle, ring.tAngle, 0.1);
 
+      // Snap faster toward fully formed so quick scrolls don't miss it
+      const catchUp = logoTarget >= 0.99 ? 0.22 : 0.16;
+      logoProgress += (logoTarget - logoProgress) * catchUp;
+      if (Math.abs(logoTarget - logoProgress) < 0.004) logoProgress = logoTarget;
+      applyLogo(logoProgress);
+
       if (aperture) {
-        aperture.style.setProperty("--ring-angle", `${ring.angle.toFixed(1)}deg`);
+        aperture.style.setProperty(
+          "--ring-angle",
+          `${ring.angle.toFixed(1)}deg`,
+        );
 
         let settled = true;
         for (const bead of beads) {
@@ -161,7 +231,8 @@ export function PageAtmosphere() {
             bead.angle = lerpAngle(bead.angle, target, 0.16);
             if (angleDelta(bead.angle, target) > 4) settled = false;
           } else {
-            bead.angle = ((bead.angle + bead.speed * dt * 2) % 360 + 360) % 360;
+            bead.angle =
+              (((bead.angle + bead.speed * dt * 2) % 360) + 360) % 360;
           }
           aperture.style.setProperty(
             `--bead-${bead.key}`,
@@ -171,8 +242,7 @@ export function PageAtmosphere() {
         if (beadMode === "home" && settled) beadMode = "orbit";
       }
 
-      // Skip canvas paint on mobile (CSS already hides it)
-      if (!isMobile()) {
+      {
         const cw = canvas.width;
         const ch = canvas.height;
         ctx.clearRect(0, 0, cw, ch);
@@ -188,7 +258,6 @@ export function PageAtmosphere() {
         ctx.fillRect(0, 0, cw, ch);
 
         const time = t * 0.001;
-        ctx.fillStyle = "rgba(240, 233, 224, 0.28)";
         for (const p of dust) {
           const sway = Math.sin(time * p.drift * 8 + p.phase) * 0.012;
           const rise = ((time * p.drift * 0.08 + p.y) % 1.15) - 0.08;
@@ -217,8 +286,11 @@ export function PageAtmosphere() {
     };
 
     resize();
+    updateLogoTarget();
+    applyLogo(reduced ? logoTarget : 0);
     window.addEventListener("resize", resize, { passive: true });
     window.addEventListener("pointermove", onPointer, { passive: true });
+    window.addEventListener("scroll", onScroll, { passive: true });
     document.addEventListener("visibilitychange", onVisibility);
 
     if (reduced) {
@@ -232,6 +304,7 @@ export function PageAtmosphere() {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", resize);
       window.removeEventListener("pointermove", onPointer);
+      window.removeEventListener("scroll", onScroll);
       document.removeEventListener("visibilitychange", onVisibility);
     };
   }, []);
@@ -246,6 +319,11 @@ export function PageAtmosphere() {
 
       <div className="light-leak light-leak-a" />
       <div className="light-leak light-leak-c" />
+
+      <div ref={logoRef} className="logo-scroll-mark">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/logo-ta.png" alt="" width={512} height={512} />
+      </div>
 
       <div ref={apertureRef} className="film-aperture">
         <span className="film-aperture-ring film-aperture-ring-1" />

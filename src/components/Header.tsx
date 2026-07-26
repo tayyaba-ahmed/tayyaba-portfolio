@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { LogoMark } from "@/components/LogoMark";
 import { site } from "@/data/portfolio";
 
 export function Header() {
@@ -61,10 +62,14 @@ export function Header() {
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-6 py-5">
           <a
             href="#top"
-            className="shrink-0 font-display text-lg font-medium tracking-tight text-foreground transition-colors hover:text-accent sm:text-xl"
+            className="group shrink-0 transition-opacity hover:opacity-80"
             onClick={closeMenu}
+            aria-label={site.fullName}
           >
-            {site.fullName}
+            <LogoMark
+              className="h-8 w-8 sm:h-9 sm:w-9"
+              priority
+            />
           </a>
 
           <div className="flex items-center gap-8">
