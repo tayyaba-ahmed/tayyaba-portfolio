@@ -2,12 +2,12 @@ import Image from "next/image";
 import { site } from "@/data/portfolio";
 import { FadeIn } from "@/components/FadeIn";
 import { SectionHeading } from "@/components/SectionHeading";
-import websitesImg from "@/assets/services/websites.png";
-import ecommerceImg from "@/assets/services/ecommerce.png";
-import redesignImg from "@/assets/services/redesign.png";
-import cmsImg from "@/assets/services/cms.png";
-import integrationsImg from "@/assets/services/integrations.png";
-import careImg from "@/assets/services/care.png";
+import websitesImg from "@/assets/services/websites.webp";
+import ecommerceImg from "@/assets/services/ecommerce.webp";
+import redesignImg from "@/assets/services/redesign.webp";
+import cmsImg from "@/assets/services/cms.webp";
+import integrationsImg from "@/assets/services/integrations.webp";
+import careImg from "@/assets/services/care.webp";
 
 const serviceImages = {
   "Websites & Landing Pages": websitesImg,
@@ -38,11 +38,12 @@ export function Services() {
                     {image && (
                       <Image
                         src={image}
-                        alt={service.title}
+                        alt=""
                         fill
                         priority={index < 2}
                         className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        quality={70}
                       />
                     )}
                   </div>

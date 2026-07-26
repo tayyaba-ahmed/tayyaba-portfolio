@@ -58,34 +58,45 @@ export function Header() {
             : "bg-transparent"
         }`}
       >
-        <div className="mx-auto flex max-w-6xl items-center justify-end px-6 py-5">
-          <nav className="hidden items-center gap-8 md:flex">
-            {site.nav.map((item) => {
-              const isActive = activeSection === item.href;
-              return (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  className={`relative text-[11px] font-medium uppercase tracking-[0.22em] transition-colors duration-300 ${
-                    isActive ? "text-accent" : "text-muted hover:text-foreground"
-                  }`}
-                >
-                  {item.label}
-                  {isActive && (
-                    <span className="absolute -bottom-1 left-0 h-px w-full bg-accent" />
-                  )}
-                </a>
-              );
-            })}
-          </nav>
-
-          <button
-            type="button"
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={menuOpen}
-            onClick={() => setMenuOpen((open) => !open)}
-            className="flex h-10 w-10 items-center justify-center text-muted transition-colors hover:text-foreground md:hidden"
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-6 py-5">
+          <a
+            href="#top"
+            className="shrink-0 font-display text-lg font-medium tracking-tight text-foreground transition-colors hover:text-accent sm:text-xl"
+            onClick={closeMenu}
           >
+            {site.fullName}
+          </a>
+
+          <div className="flex items-center gap-8">
+            <nav className="hidden items-center gap-8 md:flex">
+              {site.nav.map((item) => {
+                const isActive = activeSection === item.href;
+                return (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    className={`relative text-[11px] font-medium uppercase tracking-[0.22em] transition-colors duration-300 ${
+                      isActive
+                        ? "text-accent"
+                        : "text-muted hover:text-foreground"
+                    }`}
+                  >
+                    {item.label}
+                    {isActive && (
+                      <span className="absolute -bottom-1 left-0 h-px w-full bg-accent" />
+                    )}
+                  </a>
+                );
+              })}
+            </nav>
+
+            <button
+              type="button"
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={menuOpen}
+              onClick={() => setMenuOpen((open) => !open)}
+              className="flex h-10 w-10 items-center justify-center text-muted transition-colors hover:text-foreground md:hidden"
+            >
             <span className="relative block h-3.5 w-5">
               <span
                 className={`absolute left-0 block h-px w-5 bg-current transition-all duration-300 ${
@@ -103,7 +114,8 @@ export function Header() {
                 }`}
               />
             </span>
-          </button>
+            </button>
+          </div>
         </div>
       </header>
 

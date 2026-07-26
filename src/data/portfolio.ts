@@ -29,7 +29,7 @@ export const site = {
   title: "Software Developer",
   tagline:
     "I ship sharp products end to end — interfaces people trust, backends that hold.",
-  email: "tayyabaahmed777@mail.com",
+  email: "tayyabaahmed777@gmail.com",
   location: "Available worldwide",
   about: [
     "I take ownership from brief to production. Clean architecture, accessible UI, and decisions that age well.",
