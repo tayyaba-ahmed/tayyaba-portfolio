@@ -1,22 +1,23 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Outfit, JetBrains_Mono } from "next/font/google";
+import { Instrument_Sans, Instrument_Serif, IBM_Plex_Mono } from "next/font/google";
 import { PageAtmosphere } from "@/components/PageAtmosphere";
 import { WhatsAppFloat } from "@/components/WhatsAppFloat";
 import { site } from "@/data/portfolio";
 import "./globals.css";
 
-const display = Cormorant_Garamond({
-  variable: "--font-display",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-});
-
-const sans = Outfit({
-  variable: "--font-outfit",
+const sans = Instrument_Sans({
+  variable: "--font-sans-face",
   subsets: ["latin"],
 });
 
-const mono = JetBrains_Mono({
+const serif = Instrument_Serif({
+  variable: "--font-serif-face",
+  subsets: ["latin"],
+  weight: "400",
+  style: ["normal", "italic"],
+});
+
+const mono = IBM_Plex_Mono({
   variable: "--font-mono",
   subsets: ["latin"],
   weight: ["400", "500"],
@@ -57,9 +58,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${display.variable} ${sans.variable} ${mono.variable} scroll-smooth antialiased`}
+      className={`${sans.variable} ${serif.variable} ${mono.variable} scroll-smooth antialiased`}
     >
-      <body className="film-stage relative min-h-screen text-foreground">
+      <body className="mesh-stage relative min-h-screen text-foreground">
         <PageAtmosphere />
         <div className="film-grain" aria-hidden />
         <div className="relative z-10">{children}</div>

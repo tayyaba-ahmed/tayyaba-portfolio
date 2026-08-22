@@ -1,16 +1,18 @@
 export function SectionHeading({
   index,
+  label,
   title,
 }: {
   index: string;
+  label: string;
   title: string;
 }) {
   return (
     <div>
-      <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-accent">
-        {index}
+      <p className="text-accent text-[11px] font-medium tracking-[0.28em] uppercase">
+        {index} — {label}
       </p>
-      <h2 className="mt-3 font-display text-4xl font-medium tracking-tight text-foreground sm:text-5xl">
+      <h2 className="text-foreground mt-6 text-[clamp(2.25rem,5vw,3.5rem)] leading-[1.05] font-semibold tracking-tight">
         {title}
       </h2>
     </div>

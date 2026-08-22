@@ -1,22 +1,17 @@
 import { site } from "@/data/portfolio";
+import { skillColors } from "@/lib/skills";
+import type { IconType } from "react-icons";
 import * as SiIcons from "react-icons/si";
+import * as TbIcons from "react-icons/tb";
 
-type IconName = keyof typeof SiIcons;
+const iconPacks = [SiIcons, TbIcons] as const;
 
-const skillColors: Record<string, string> = {
-  PHP: "#777BB4",
-  Laravel: "#FF2D20",
-  React: "#61DAFB",
-  "Next.js": "#EDEDED",
-  "Node.js": "#339933",
-  MySQL: "#4479A1",
-  C: "#A8B9CC",
-  "ASP.NET": "#512BD4",
-  "Tailwind CSS": "#38BDF8",
-};
-
-function getIcon(iconName: string) {
-  return SiIcons[iconName as IconName] ?? null;
+function getIcon(iconName: string): IconType | null {
+  for (const pack of iconPacks) {
+    const Icon = pack[iconName as keyof typeof pack];
+    if (Icon) return Icon as IconType;
+  }
+  return null;
 }
 
 function SkillItems({ markedHidden = false }: { markedHidden?: boolean }) {
@@ -24,20 +19,20 @@ function SkillItems({ markedHidden = false }: { markedHidden?: boolean }) {
     <ul className="flex items-center" aria-hidden={markedHidden || undefined}>
       {site.skills.map((skill) => {
         const Icon = getIcon(skill.icon);
-        const color = skillColors[skill.name] ?? "#c9996a";
+        const color = skillColors[skill.name] ?? "var(--accent)";
 
         return (
           <li
             key={`${skill.name}-${markedHidden ? "b" : "a"}`}
-            className="mx-3 flex shrink-0 items-center gap-3 border border-border/70 px-5 py-4"
+            className="mx-2 flex shrink-0 items-center gap-3 rounded-full bg-black/35 px-5 py-3 ring-1 ring-white/10"
           >
             <span
-              className="flex h-10 w-10 items-center justify-center"
+              className="flex h-8 w-8 items-center justify-center"
               style={{ color }}
             >
-              {Icon && <Icon size={26} aria-hidden />}
+              {Icon && <Icon size={22} aria-hidden />}
             </span>
-            <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-foreground">
+            <span className="text-[11px] uppercase tracking-[0.18em] text-foreground">
               {skill.name}
             </span>
           </li>
@@ -50,13 +45,13 @@ function SkillItems({ markedHidden = false }: { markedHidden?: boolean }) {
 export function SkillsMarquee() {
   return (
     <div>
-      <p className="mb-6 font-mono text-[11px] uppercase tracking-[0.3em] text-muted">
+      <p className="mb-5 text-[11px] font-medium uppercase tracking-[0.28em] text-muted">
         Languages & tools
       </p>
 
-      <div className="relative overflow-hidden border-y border-border py-6">
-        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r from-background to-transparent" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-background to-transparent" />
+      <div className="relative overflow-hidden py-2">
+        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-black/70 to-transparent" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-black/70 to-transparent" />
 
         <div className="marquee-track flex w-max">
           <SkillItems />

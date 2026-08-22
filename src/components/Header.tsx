@@ -1,13 +1,19 @@
 "use client";
 
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { LogoMark } from "@/components/LogoMark";
 import { site } from "@/data/portfolio";
 
 export function Header() {
+  const pathname = usePathname();
+  const onHome = pathname === "/";
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
+
+  const toHref = (hash: string) => (onHome ? hash : `/${hash}`);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -17,6 +23,11 @@ export function Header() {
   }, []);
 
   useEffect(() => {
+    if (!onHome) {
+      setActiveSection("");
+      return;
+    }
+
     const sectionIds = site.nav.map((item) => item.href.replace("#", ""));
     const sections = sectionIds
       .map((id) => document.getElementById(id))
@@ -39,7 +50,7 @@ export function Header() {
 
     sections.forEach((section) => observer.observe(section));
     return () => observer.disconnect();
-  }, []);
+  }, [onHome]);
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
@@ -53,55 +64,66 @@ export function Header() {
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
-          scrolled
-            ? "border-b border-border/60 bg-background/80 backdrop-blur-md"
-            : "bg-transparent"
+        className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
+          scrolled ? "bg-background/70 backdrop-blur-md" : "bg-transparent"
         }`}
       >
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-6 py-5">
-          <a
-            href="#top"
-            className="group shrink-0 transition-opacity hover:opacity-80"
+        <div className="mx-auto flex max-w-[92rem] items-center justify-between gap-3 px-5 py-5 sm:gap-6 sm:px-10">
+          <Link
+            href={onHome ? "/#top" : "/"}
+            className="flex shrink-0 items-center transition-opacity hover:opacity-70"
             onClick={closeMenu}
             aria-label={site.fullName}
           >
-            <LogoMark
-              className="h-8 w-8 sm:h-9 sm:w-9"
+            <Image
+              src="/logo-ta.png"
+              alt=""
+              width={44}
+              height={42}
+              className="h-9 w-auto sm:h-10"
               priority
             />
+          </Link>
+
+          <nav className="hidden items-center gap-8 lg:flex">
+            {site.nav.map((item) => {
+              const isActive =
+                onHome && activeSection === item.href
+                  ? true
+                  : !onHome &&
+                    item.href === "#projects" &&
+                    pathname === "/portfolio";
+              return (
+                <a
+                  key={item.href}
+                  href={toHref(item.href)}
+                  className={`text-[11px] font-medium tracking-[0.28em] uppercase transition-colors ${
+                    isActive
+                      ? "text-foreground"
+                      : "text-muted hover:text-foreground"
+                  }`}
+                >
+                  {item.label}
+                </a>
+              );
+            })}
+          </nav>
+
+          <a
+            href={toHref("#contact")}
+            className="hidden items-center gap-2 rounded-full border border-accent/40 bg-accent/10 px-5 py-2.5 text-[11px] font-medium tracking-[0.28em] text-foreground uppercase transition-colors hover:border-accent/70 hover:bg-accent/20 lg:inline-flex"
+          >
+            Contact me
+            <span aria-hidden>↗</span>
           </a>
 
-          <div className="flex items-center gap-8">
-            <nav className="hidden items-center gap-8 md:flex">
-              {site.nav.map((item) => {
-                const isActive = activeSection === item.href;
-                return (
-                  <a
-                    key={item.href}
-                    href={item.href}
-                    className={`relative text-[11px] font-medium uppercase tracking-[0.22em] transition-colors duration-300 ${
-                      isActive
-                        ? "text-accent"
-                        : "text-muted hover:text-foreground"
-                    }`}
-                  >
-                    {item.label}
-                    {isActive && (
-                      <span className="absolute -bottom-1 left-0 h-px w-full bg-accent" />
-                    )}
-                  </a>
-                );
-              })}
-            </nav>
-
-            <button
-              type="button"
-              aria-label={menuOpen ? "Close menu" : "Open menu"}
-              aria-expanded={menuOpen}
-              onClick={() => setMenuOpen((open) => !open)}
-              className="flex h-10 w-10 items-center justify-center text-muted transition-colors hover:text-foreground md:hidden"
-            >
+          <button
+            type="button"
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen((open) => !open)}
+            className="flex h-10 w-10 items-center justify-center text-muted lg:hidden"
+          >
             <span className="relative block h-3.5 w-5">
               <span
                 className={`absolute left-0 block h-px w-5 bg-current transition-all duration-300 ${
@@ -109,7 +131,7 @@ export function Header() {
                 }`}
               />
               <span
-                className={`absolute left-0 top-[7px] block h-px w-5 bg-current transition-all duration-300 ${
+                className={`absolute top-[7px] left-0 block h-px w-5 bg-current transition-all duration-300 ${
                   menuOpen ? "opacity-0" : "opacity-100"
                 }`}
               />
@@ -119,20 +141,19 @@ export function Header() {
                 }`}
               />
             </span>
-            </button>
-          </div>
+          </button>
         </div>
       </header>
 
       <div
-        className={`fixed inset-0 z-40 bg-background/90 backdrop-blur-sm transition-opacity duration-300 md:hidden ${
+        className={`fixed inset-0 z-40 bg-background/85 backdrop-blur-sm transition-opacity duration-300 lg:hidden ${
           menuOpen ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
         onClick={closeMenu}
         aria-hidden={!menuOpen}
       />
       <nav
-        className={`fixed inset-x-0 top-0 z-50 flex h-dvh flex-col justify-center px-8 transition-all duration-500 md:hidden ${
+        className={`fixed inset-x-0 top-0 z-50 flex h-dvh flex-col justify-center px-8 transition-all duration-500 lg:hidden ${
           menuOpen
             ? "translate-y-0 opacity-100"
             : "pointer-events-none -translate-y-4 opacity-0"
@@ -143,24 +164,19 @@ export function Header() {
           type="button"
           aria-label="Close menu"
           onClick={closeMenu}
-          className="absolute right-6 top-5 text-[11px] font-medium uppercase tracking-[0.22em] text-muted"
+          className="absolute top-5 right-6 text-[11px] tracking-[0.28em] text-muted uppercase"
         >
           Close
         </button>
         <ul className="space-y-6">
-          {site.nav.map((item, index) => (
+          {site.nav.map((item) => (
             <li key={item.href}>
               <a
-                href={item.href}
+                href={toHref(item.href)}
                 onClick={closeMenu}
-                className="group flex items-baseline gap-4"
+                className="font-serif text-5xl text-foreground italic"
               >
-                <span className="font-mono text-xs text-accent/70">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <span className="font-display text-5xl font-medium tracking-tight text-foreground transition-colors group-hover:text-accent">
-                  {item.label}
-                </span>
+                {item.label}
               </a>
             </li>
           ))}

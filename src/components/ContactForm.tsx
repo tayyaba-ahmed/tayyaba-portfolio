@@ -14,10 +14,10 @@ const projectTypes = [
 type Status = "idle" | "sending" | "success" | "error";
 
 const fieldClass =
-  "w-full border border-border bg-surface/50 px-4 py-3.5 text-sm text-foreground outline-none transition-colors placeholder:text-muted/50 focus:border-accent";
+  "w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3.5 text-sm text-foreground outline-none transition-colors placeholder:text-muted/50 focus:border-accent";
 
 const labelClass =
-  "mb-2 block font-mono text-[11px] font-medium uppercase tracking-[0.22em] text-muted";
+  "mb-2 block text-[11px] font-medium uppercase tracking-[0.22em] text-muted";
 
 export function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
@@ -60,11 +60,11 @@ export function ContactForm() {
 
   if (status === "success") {
     return (
-      <div className="flex h-full min-h-[280px] flex-col justify-center border border-border bg-surface/40 p-8 sm:p-10">
-        <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-accent">
+      <div className="flex h-full min-h-[280px] flex-col justify-center rounded-2xl bg-black/35 p-8 ring-1 ring-white/10 sm:p-10">
+        <p className="text-[11px] uppercase tracking-[0.22em] text-accent">
           Sent
         </p>
-        <p className="mt-4 font-display text-3xl font-medium tracking-tight text-foreground">
+        <p className="mt-4 font-serif text-3xl italic text-foreground">
           Message received.
         </p>
         <p className="mt-3 max-w-sm text-base leading-relaxed text-muted">
@@ -74,7 +74,7 @@ export function ContactForm() {
         <button
           type="button"
           onClick={() => setStatus("idle")}
-          className="mt-8 inline-flex w-fit border border-border px-6 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-foreground transition-colors hover:border-accent hover:text-accent"
+          className="mt-8 inline-flex w-fit rounded-full px-6 py-3 text-[11px] uppercase tracking-[0.2em] text-foreground ring-1 ring-white/15 transition-colors hover:ring-accent"
         >
           Send another
         </button>
@@ -83,7 +83,11 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="border border-border bg-surface/40 p-6 sm:p-8" noValidate>
+    <form
+      onSubmit={onSubmit}
+      className="rounded-2xl bg-black/35 p-6 ring-1 ring-white/10 sm:p-8"
+      noValidate
+    >
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
           <label htmlFor="contact-name" className={labelClass}>
@@ -131,7 +135,7 @@ export function ContactForm() {
           onChange={(e) => setProject(e.target.value)}
           className={`${fieldClass} appearance-none bg-[length:12px] bg-[right_1rem_center] bg-no-repeat pr-10`}
           style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%239a8f82' stroke-width='1.5'/%3E%3C/svg%3E")`,
+            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%239b9ea6' stroke-width='1.5'/%3E%3C/svg%3E")`,
           }}
         >
           {projectTypes.map((type) => (
@@ -153,13 +157,13 @@ export function ContactForm() {
           rows={5}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          className={`${fieldClass} resize-y min-h-[140px]`}
+          className={`${fieldClass} min-h-[140px] resize-y`}
           placeholder="What are you building, and what do you need from me?"
         />
       </div>
 
       {status === "error" && error && (
-        <p className="mt-4 font-mono text-[11px] tracking-[0.08em] text-red-300/90" role="alert">
+        <p className="mt-4 text-sm text-red-400" role="alert">
           {error}
         </p>
       )}
@@ -168,11 +172,11 @@ export function ContactForm() {
         <button
           type="submit"
           disabled={status === "sending"}
-          className="inline-flex items-center bg-accent px-7 py-3.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-accent-foreground transition-opacity hover:opacity-90 disabled:cursor-wait disabled:opacity-60"
+          className="inline-flex items-center rounded-full bg-foreground px-6 py-3 text-[11px] font-medium uppercase tracking-[0.2em] text-background transition-opacity hover:opacity-90 disabled:cursor-wait disabled:opacity-60"
         >
           {status === "sending" ? "Sending…" : "Send message"}
         </button>
-        <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted">
+        <p className="text-[11px] uppercase tracking-[0.18em] text-muted">
           Usually replies within 24h
         </p>
       </div>
