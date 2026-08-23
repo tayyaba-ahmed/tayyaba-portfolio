@@ -88,7 +88,7 @@ export function CodePanel() {
   );
 
   return (
-    <aside className="panel-float relative overflow-hidden rounded-2xl bg-black/35 ring-1 ring-white/10">
+    <aside className="panel-float relative min-w-0 max-w-full overflow-hidden rounded-2xl bg-black/35 ring-1 ring-white/10">
       <div
         className="panel-glow pointer-events-none absolute -top-16 right-0 h-44 w-44 rounded-full bg-accent/18 blur-3xl"
         aria-hidden
@@ -104,8 +104,8 @@ export function CodePanel() {
         </span>
       </div>
 
-      <pre className="relative overflow-x-auto px-4 py-5 font-mono text-[clamp(11px,2.6vw,13px)] leading-7 sm:px-5">
-        <code>
+      <pre className="relative overflow-x-hidden px-4 py-5 font-mono text-[clamp(10px,2.6vw,13px)] leading-7 max-[325px]:px-3 max-[325px]:py-4 max-[325px]:text-[10px] max-[325px]:leading-6 sm:px-5">
+        <code className="block min-w-0">
           {SNIPPET.map((line, lineIndex) => {
             const visible = Math.max(
               0,
@@ -117,18 +117,18 @@ export function CodePanel() {
             return (
               <div
                 key={lineIndex}
-                className={`flex min-h-7 gap-4 rounded-md px-1.5 transition-colors duration-300 ${
+                className={`flex min-h-7 gap-3 rounded-md px-1.5 transition-colors duration-300 max-[325px]:gap-2 max-[325px]:min-h-6 ${
                   isActive ? "bg-accent/8" : "bg-transparent"
                 }`}
               >
                 <span
-                  className={`w-4 shrink-0 select-none text-right text-[10px] transition-colors duration-300 ${
+                  className={`w-4 shrink-0 select-none text-right text-[10px] transition-colors duration-300 max-[325px]:w-3.5 max-[325px]:text-[9px] ${
                     isActive ? "text-accent" : "text-white/25"
                   }`}
                 >
                   {String(lineIndex + 1).padStart(2, "0")}
                 </span>
-                <span className="min-w-0">
+                <span className="min-w-0 flex-1 break-words whitespace-pre-wrap">
                   {line.map((token, tokenIndex) => {
                     const shown = token.text.slice(
                       0,

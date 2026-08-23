@@ -30,6 +30,8 @@ export const site = {
   tagline:
     "I create unconventional yet functional interfaces for the web.",
   email: "tayyabaahmed777@gmail.com",
+  phone: "+92 313 2115662",
+  phoneHref: "tel:+923132115662",
   location: "Available worldwide",
   cv: "/Tayyaba-Ahmed-CV.pdf",
   about: [
@@ -127,6 +129,8 @@ export const site = {
       description:
         "Premium WordPress theme for a luxury salon — booking, custom post types, ACF fields, and a fully editable admin experience.",
       tags: ["WordPress", "PHP", "Booking"],
+      href: "https://lumiere-salon.infinityfree.io/",
+      image: "lumiere",
     },
     {
       title: "ZAS Architects & Interiors",
@@ -150,7 +154,6 @@ export const site = {
     { label: "GitHub", href: "https://github.com/tayyaba-ahmed", icon: "SiGithub" },
     { label: "LinkedIn", href: "https://www.linkedin.com/in/tayyabaahmed", icon: "SiLinkedinIn" },
     { label: "WhatsApp", href: "https://wa.me/923132115662", icon: "SiWhatsapp" },
-    { label: "waxdocllc.com", href: "https://waxdocllc.com/", icon: "TbWorld" },
   ] satisfies SocialLink[],
   nav: [
     { label: "Home", href: "#top" },

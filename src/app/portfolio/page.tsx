@@ -6,8 +6,16 @@ import { ProjectCard } from "@/components/ProjectCard";
 import { site } from "@/data/portfolio";
 
 export const metadata: Metadata = {
-  title: `Portfolio — ${site.fullName}`,
-  description: `Selected work by ${site.fullName}: websites, ecommerce, and product builds.`,
+  title: "Portfolio",
+  description: `Selected work by ${site.fullName}: websites, ecommerce, WordPress, and product builds.`,
+  alternates: {
+    canonical: "/portfolio",
+  },
+  openGraph: {
+    title: `Portfolio — ${site.fullName}`,
+    description: `Selected work by ${site.fullName}: websites, ecommerce, WordPress, and product builds.`,
+    url: "/portfolio",
+  },
 };
 
 export default function PortfolioPage() {
