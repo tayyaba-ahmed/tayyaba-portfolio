@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { FiDownload } from "react-icons/fi";
 import { CodePanel } from "@/components/CodePanel";
 import { site } from "@/data/portfolio";
 
@@ -320,9 +321,10 @@ export function Hero() {
         <a
           href={site.cv}
           download="Tayyaba-Ahmed-CV.pdf"
-          className="inline-flex items-center justify-center rounded-full px-7 py-3.5 text-center text-[11px] font-medium tracking-[0.2em] text-foreground uppercase ring-1 ring-white/15 transition-colors hover:bg-white/5 hover:ring-white/30"
+          className="inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-center text-[11px] font-medium tracking-[0.2em] text-foreground uppercase ring-1 ring-white/15 transition-colors hover:bg-white/5 hover:ring-white/30"
         >
           Download CV
+          <FiDownload size={14} aria-hidden />
         </a>
       </div>
 

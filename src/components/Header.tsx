@@ -160,14 +160,6 @@ export function Header() {
         }`}
         aria-hidden={!menuOpen}
       >
-        <button
-          type="button"
-          aria-label="Close menu"
-          onClick={closeMenu}
-          className="absolute top-5 right-6 text-[11px] tracking-[0.28em] text-muted uppercase"
-        >
-          Close
-        </button>
         <ul className="space-y-6">
           {site.nav.map((item) => (
             <li key={item.href}>
