@@ -319,7 +319,7 @@ export function Hero() {
         </a>
         <a
           href={site.cv}
-          download
+          download="Tayyaba-Ahmed-CV.pdf"
           className="inline-flex items-center justify-center rounded-full px-7 py-3.5 text-center text-[11px] font-medium tracking-[0.2em] text-foreground uppercase ring-1 ring-white/15 transition-colors hover:bg-white/5 hover:ring-white/30"
         >
           Download CV
