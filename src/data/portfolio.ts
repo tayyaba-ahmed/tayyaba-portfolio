@@ -108,13 +108,12 @@ export const site = {
   ] satisfies Service[],
   projects: [
     {
-      title: "StrideWear",
+      title: "Lumière Salon",
       description:
-        "Fashion e-commerce with curated collections, category shopping, cart, checkout, and an admin loop — built for everyday elegance.",
-      tags: ["Next.js", "E-commerce", "Prisma"],
-      href: "https://stridewear.vercel.app/",
-      github: "https://github.com/tayyaba-ahmed/stridewear",
-      image: "stridewear",
+        "Premium WordPress theme for a luxury salon — booking, custom post types, ACF fields, and a fully editable admin experience.",
+      tags: ["WordPress", "PHP", "Booking"],
+      href: "https://lumiere-salon.infinityfree.io/",
+      image: "lumiere",
     },
     {
       title: "7 Touch Solutions",
@@ -125,12 +124,13 @@ export const site = {
       image: "7touch",
     },
     {
-      title: "Lumière Salon",
+      title: "StrideWear",
       description:
-        "Premium WordPress theme for a luxury salon — booking, custom post types, ACF fields, and a fully editable admin experience.",
-      tags: ["WordPress", "PHP", "Booking"],
-      href: "https://lumiere-salon.infinityfree.io/",
-      image: "lumiere",
+        "Fashion e-commerce with curated collections, category shopping, cart, checkout, and an admin loop — built for everyday elegance.",
+      tags: ["Next.js", "E-commerce", "Prisma"],
+      href: "https://stridewear.vercel.app/",
+      github: "https://github.com/tayyaba-ahmed/stridewear",
+      image: "stridewear",
     },
     {
       title: "ZAS Architects & Interiors",
