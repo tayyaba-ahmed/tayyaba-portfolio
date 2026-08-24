@@ -117,31 +117,21 @@ export function Header() {
             <span aria-hidden>↗</span>
           </a>
 
-          <button
-            type="button"
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={menuOpen}
-            onClick={() => setMenuOpen((open) => !open)}
-            className="flex h-10 w-10 items-center justify-center text-muted lg:hidden"
-          >
-            <span className="relative block h-3.5 w-5">
-              <span
-                className={`absolute left-0 block h-px w-5 bg-current transition-all duration-300 ${
-                  menuOpen ? "top-[7px] rotate-45" : "top-0"
-                }`}
-              />
-              <span
-                className={`absolute top-[7px] left-0 block h-px w-5 bg-current transition-all duration-300 ${
-                  menuOpen ? "opacity-0" : "opacity-100"
-                }`}
-              />
-              <span
-                className={`absolute left-0 block h-px w-5 bg-current transition-all duration-300 ${
-                  menuOpen ? "top-[7px] -rotate-45" : "top-3.5"
-                }`}
-              />
-            </span>
-          </button>
+          {!menuOpen && (
+            <button
+              type="button"
+              aria-label="Open menu"
+              aria-expanded={false}
+              onClick={() => setMenuOpen(true)}
+              className="flex h-10 w-10 items-center justify-center text-muted lg:hidden"
+            >
+              <span className="relative block h-3.5 w-5">
+                <span className="absolute top-0 left-0 block h-px w-5 bg-current" />
+                <span className="absolute top-[7px] left-0 block h-px w-5 bg-current" />
+                <span className="absolute top-3.5 left-0 block h-px w-5 bg-current" />
+              </span>
+            </button>
+          )}
         </div>
       </header>
 
@@ -160,6 +150,14 @@ export function Header() {
         }`}
         aria-hidden={!menuOpen}
       >
+        <button
+          type="button"
+          aria-label="Close menu"
+          onClick={closeMenu}
+          className="absolute top-5 right-6 text-[11px] tracking-[0.28em] text-muted uppercase transition-colors hover:text-foreground"
+        >
+          Close
+        </button>
         <ul className="space-y-6">
           {site.nav.map((item) => (
             <li key={item.href}>
