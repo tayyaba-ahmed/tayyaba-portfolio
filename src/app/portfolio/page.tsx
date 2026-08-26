@@ -15,7 +15,14 @@ export const metadata: Metadata = {
     title: `Portfolio — ${site.fullName}`,
     description: `Selected work by ${site.fullName}: websites, ecommerce, WordPress, and product builds.`,
     url: "/portfolio",
-    images: [{ url: "/og-share.jpg", width: 1200, height: 630, alt: `Portfolio — ${site.fullName}` }],
+    images: [
+      {
+        url: "/og-share.jpg?v=3",
+        width: 1200,
+        height: 630,
+        alt: `Portfolio — ${site.fullName}`,
+      },
+    ],
   },
 };
 

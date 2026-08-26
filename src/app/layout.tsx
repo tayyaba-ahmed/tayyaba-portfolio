@@ -68,7 +68,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/og-share.jpg",
+        url: "/og-share.jpg?v=3",
         width: 1200,
         height: 630,
         alt: siteTitle,
@@ -80,7 +80,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: siteTitle,
     description: siteDescription,
-    images: ["/og-share.jpg"],
+    images: ["/og-share.jpg?v=3"],
   },
   formatDetection: {
     email: false,
