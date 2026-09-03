@@ -115,14 +115,14 @@ export const site = {
       href: "https://lumiere-salon.infinityfree.io/",
       image: "lumiere",
     },
-    {
-      title: "7 Touch Solutions",
-      description:
-        "Agency site with services, reviews, and an AI chatbot layer — websites, apps, and growth marketing for startups.",
-      tags: ["HTML", "Supabase", "Chatbot"],
-      href: "https://7touchsolutions.com/",
-      image: "7touch",
-    },
+    // {
+    //   title: "7 Touch Solutions",
+    //   description:
+    //     "Agency site with services, reviews, and an AI chatbot layer — websites, apps, and growth marketing for startups.",
+    //   tags: ["HTML", "Supabase", "Chatbot"],
+    //   href: "https://7touchsolutions.com/",
+    //   image: "7touch",
+    // },
     {
       title: "StrideWear",
       description:
@@ -141,14 +141,14 @@ export const site = {
       github: "https://github.com/tayyaba-ahmed/zas",
       image: "zas",
     },
-    {
-      title: "WAX DOC",
-      description:
-        "Digital agency marketing site for custom websites, AI chatbots, calling agents, apps, and creative services.",
-      tags: ["HTML", "Agency", "Marketing"],
-      href: "https://waxdocllc.com/",
-      image: "waxdoc",
-    },
+    // {
+    //   title: "WAX DOC",
+    //   description:
+    //     "Digital agency marketing site for custom websites, AI chatbots, calling agents, apps, and creative services.",
+    //   tags: ["HTML", "Agency", "Marketing"],
+    //   href: "https://waxdocllc.com/",
+    //   image: "waxdoc",
+    // },
   ] as Project[],
   socials: [
     { label: "GitHub", href: "https://github.com/tayyaba-ahmed", icon: "SiGithub" },
